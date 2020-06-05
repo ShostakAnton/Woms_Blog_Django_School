@@ -7,7 +7,7 @@
 {% block content %}
 
     <h1>{{ new.title }}</h1>
-    <p>{{ new.text }}</p>
+    <p>{{ new.text|safe }}</p>
 Категоря - {{ new.category }}<br/>
     Теги - {% for tag in new.tags.all %}
                 {{ tag.title }}

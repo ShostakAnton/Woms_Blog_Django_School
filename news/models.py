@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class Category(models.Model):
     """Класс категорий статей
     """
@@ -39,8 +40,8 @@ class News(models.Model):
     category = models.ForeignKey(
         Category,
         verbose_name="Категория",
-        on_delete=models.SET_NULL,   # если удалить категория, то статья останеться
-        null=True)      # поле может быть пустым
+        on_delete=models.SET_NULL,  # если удалить категория, то статья останеться
+        null=True)  # поле может быть пустым
     title = models.CharField("Заголовок", max_length=100)
     text_min = models.TextField("Мин. текст", max_length=350)
     text = models.TextField("Текст статьи")
@@ -55,3 +56,27 @@ class News(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Comments(models.Model):
+    """Класс комментариев к новостям
+    """
+
+    user = models.ForeignKey(
+        User,
+        verbose_name='Пользователь',
+        on_delete=models.CASCADE)
+    new = models.ForeignKey(
+        News,
+        verbose_name='Новость',
+        on_delete=models.CASCADE)
+    text = models.TextField('Комментарий')
+    created = models.DateTimeField('Дата добавления', auto_now_add=True, null=True)
+    moderation = models.BooleanField('Модерация', default=False)
+
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+
+    def __str__(self):
+        return '{}'.format(self.user)
