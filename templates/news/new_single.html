@@ -18,10 +18,13 @@
         {{ comment.text }} <br/>
         Добавлен - {{ comment.created }} <br/><br/>
     {% endfor %}
-
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Отправить</button>
-    </form>
+    {% if user.is_active %}
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Отправить</button>
+        </form>
+    {% else %}
+        <h4>Что бы оставить коментарий авторизуйтесь</h4>
+    {% endif %}
 {% endblock content %}
