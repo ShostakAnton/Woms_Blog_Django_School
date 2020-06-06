@@ -38,7 +38,7 @@ def news_filter(request, pk):
 
     if pk == 1:
         now = datetime.now() - timedelta(minutes=60 * 24 * 7)  # текущая дата минус неделя
-        news = news.filter(created__gte=now)
+        news = news.filter(created__gte=now)    # сравниваем больше или равно текущей дате
     elif pk == 2:
         now = datetime.now() - timedelta(minutes=60 * 24 * 30)  # текущая дата минус месяц
         news = news.filter(created__gte=now)

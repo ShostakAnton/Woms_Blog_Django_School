@@ -4,7 +4,13 @@ import django_summernote.admin
 
 
 class NewAdmin(django_summernote.admin.SummernoteModelAdmin):
-    summernote_fields = ('text_min', 'text',)
+    """ Новости
+        """
+    list_display = ("title", "user", "created")
+    list_editable = ("user", )       # редактирование поля с админ-панели
+    search_fields = ["title", "user__username"]
+    list_filter = ("user", "created")
+    summer_note_fields = ('text_min', 'text')
 
 
 admin.site.register(News, NewAdmin)
