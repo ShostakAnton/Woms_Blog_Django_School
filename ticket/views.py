@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.views.generic.base import TemplateView  # класс позволяет использовать шаблоы приложения
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.list import ListView
 from .models import Ticket
 from .forms import AddTicketForm
-
+from django.urls import reverse
 
 # class MyView(View):
 #
@@ -19,7 +20,6 @@ from .forms import AddTicketForm
 #         context = super(MyTemplateView, self).get_context_data(**kwargs)
 #         context['text'] = 'Hi world!'
 #         return context
-
 
 class AddTicket(CreateView):
     """ Добавление тикета
@@ -36,3 +36,25 @@ class AddTicket(CreateView):
     def success_url(self):
         return redirect('/add-ticket/')
 
+
+class ListTicket(ListView):
+    """Список тикетов пользователя
+    """
+    model = Ticket
+    # queryset = Ticket.objects.all()     # вывод всех тикетов
+    context_object_name = "tickets"
+    template_name = "ticket/list-ticket.html"
+
+    def get_queryset(self):
+        return Ticket.objects.filter(user=self.request.user)
+
+
+class UpdateTicket(UpdateView):
+    """Редактипрование тикета
+    """
+    model = Ticket
+    form_class = AddTicketForm
+    template_name = "ticket/update-ticket.html"
+
+    def get_success_url(self):      # перенаправление, после успешного редактирования
+        return reverse('list-ticket')
